@@ -4,10 +4,8 @@ import 'dart:convert';
 import 'package:gestorsofttec/controllers/projeto_controller.dart';
 import 'package:gestorsofttec/views/projetos/novo_projeto_view.dart';
 import 'package:gestorsofttec/views/projetos/projeto/projeto_view.dart';
-
 import 'package:provider/provider.dart';
 import 'package:gestorsofttec/models/projeto_model.dart';
-import 'detalhe_projeto_view.dart';
 
 class GradeProjetosView extends StatelessWidget {
   const GradeProjetosView({super.key});
@@ -69,17 +67,17 @@ class GradeProjetosView extends StatelessWidget {
             context.read<ProjetoController>().mudarTela(TelaProjeto.lista);
           },
         );
-      case TelaProjeto.detalheProjeto:
+      /* case TelaProjeto.detalheProjeto:
         return DetalheProjetoView(
           onVoltar: () {
             context.read<ProjetoController>().mudarTela(TelaProjeto.lista);
           },
-        );
+        ); */
       case TelaProjeto.visualizarProjeto:
         return ProjetoView(
           onVoltar: () {
             context.read<ProjetoController>().mudarTela(
-              TelaProjeto.detalheProjeto,
+              TelaProjeto.lista,
             );
           },
         );
@@ -179,7 +177,7 @@ class GradeProjetosView extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         context.read<ProjetoController>().setProjetoAtivo(projeto);
-        context.read<ProjetoController>().mudarTela(TelaProjeto.detalheProjeto);
+        context.read<ProjetoController>().mudarTela(TelaProjeto.visualizarProjeto);
         print('Navegando para a visualização do projeto ${projeto.cliente}');
       },
       child: ClipRRect(

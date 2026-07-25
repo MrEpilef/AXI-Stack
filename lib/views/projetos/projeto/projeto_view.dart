@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gestorsofttec/views/projetos/projeto/projeto_detalhe_view.dart';
 import 'package:gestorsofttec/views/projetos/projeto/projeto_diario_view.dart';
 import 'package:gestorsofttec/views/projetos/projeto/projeto_financeiro_view.dart';
 import 'package:gestorsofttec/views/projetos/projeto/projeto_pendencias_view.dart';
@@ -19,7 +20,7 @@ class ProjetoView extends StatelessWidget {
 
 
         child: DefaultTabController(
-          length: 3,
+          length: 4,
 
 
           child: Container(
@@ -59,6 +60,7 @@ class ProjetoView extends StatelessWidget {
                           labelColor: Color(0xFFFF4103),
                           unselectedLabelColor: Colors.white60,
                             tabs: [
+                              Tab(icon: Icon(Icons.dashboard), text: 'Detalhes'),
                               Tab(icon: Icon(Icons.attach_money), text: 'Financeiro'),
                               Tab(icon: Icon(Icons.calendar_month_outlined), text: 'Diário'),
                               Tab(icon: Icon(Icons.pending_actions), text: 'Pendências'),
@@ -72,6 +74,7 @@ class ProjetoView extends StatelessWidget {
                   Expanded(
                     child: TabBarView(
                       children: [
+                        DetalheProjetoView(),
                         ProjetoFinanceiroView(),
                         ProjetoDiarioView(),
                         ProjetoPendenciasView(),

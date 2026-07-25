@@ -66,7 +66,7 @@ class ProjetoFinanceiroView extends StatelessWidget {
 @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      padding: const EdgeInsets.only(top: 16.0, bottom: 32.0),
+      padding: const EdgeInsets.all(32.0),
       itemCount: lancamentos.length,
       separatorBuilder: (context, index) => const SizedBox(height: 12),
       itemBuilder: (context, index) {
