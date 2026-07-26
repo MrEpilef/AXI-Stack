@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:gestorsofttec/models/analista_model.dart';
+import 'package:gestorsofttec/services/analista_service.dart';
 import 'package:gestorsofttec/widgets/botao_padrao.dart';
 import 'package:gestorsofttec/widgets/campo_texto_padrao.dart';
 import 'package:gestorsofttec/widgets/dropdown_padrao.dart';
+import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class FormularioAnalistas extends StatefulWidget {
   const FormularioAnalistas({super.key});
@@ -15,6 +18,10 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
   final _emailController = TextEditingController();
   final _telefoneController = TextEditingController();
   String? _cargoSelecionado;
+  final _mascaraTelefone = MaskTextInputFormatter(
+    mask: '(##)# ####-####',
+    filter: {"#": RegExp(r'[0-9]')},
+  );
 
   @override
   void dispose() {
@@ -63,10 +70,13 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
                         'Gerente',
                         'Diretor',
                       ],
+                      valorSelecionado: _cargoSelecionado,
                       onChanged: (valorSelecionado) {
                         print('Cargo selecionado é :$valorSelecionado');
+                        setState(() {
+                          _cargoSelecionado = valorSelecionado;
+                        });
                       },
-                      valorSelecionado: _cargoSelecionado,
                     ),
                   ),
                 ],
@@ -89,6 +99,7 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
                       label: 'Telefone',
                       hint: '(00) 00000-0000',
                       controller: _telefoneController,
+                      inputFormatters: [_mascaraTelefone],
                     ),
                   ),
                 ],
@@ -101,10 +112,44 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
           left: 32.0,
           child: BotaoPadrao(
             label: 'SALVAR ANALISTA',
-            onPressed: () {
-              print('Cadastro realizado com sucesso!');
-            },
             icone: Icons.save,
+            onPressed: () async {
+
+              if (_cargoSelecionado == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(
+                    content: Text('Por favor, selecione o cargo do analista!'),
+                    backgroundColor: Colors.redAccent,
+                  ),
+                );
+                return;
+              }
+
+              Analista novoAnalista = Analista(
+                nome: _nomeController.text,
+                cargo: _cargoSelecionado!,
+                email: _emailController.text,
+                telefone: _telefoneController.text,
+              );
+
+              Analista? analistaSalvo = await AnalistaService().salvarAnalista(
+                novoAnalista,
+              );
+
+              if (analistaSalvo != null &&
+                  analistaSalvo.codigoAnalista != null) {
+                if (!context.mounted) return; // Proteção padrão do Flutter
+
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(
+                      'Sucesso! Analista salvo com o Código: ${analistaSalvo.codigoAnalista}',
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                );
+              }
+            },
           ),
         ),
       ],

@@ -1,5 +1,5 @@
 class Cliente {
-  final int codigoCliente;
+  final int? codigoCliente;
   final String razaoSocial;
   final String cnpj;
   final String endereco;
@@ -10,7 +10,7 @@ class Cliente {
   final String email;
 
   Cliente({
-    required this.codigoCliente,
+    this.codigoCliente,
     required this.razaoSocial,
     required this.cnpj,
     required this.endereco,

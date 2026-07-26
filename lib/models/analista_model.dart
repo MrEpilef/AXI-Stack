@@ -1,12 +1,12 @@
 class Analista {
-  final int codigoAnalista;
+  final int? codigoAnalista;
   final String nome;
   final String cargo;
   final String email;
   final String telefone;
 
   Analista({
-    required this.codigoAnalista,
+    this.codigoAnalista,
     required this.nome,
     required this.cargo,
     required this.email,
