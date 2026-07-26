@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class DropdownPadrao extends StatelessWidget {
   final String label;
   final List<String> itens;
+  final String? valorSelecionado;
 
   final void Function(String?)? onChanged;
 
@@ -11,12 +12,13 @@ class DropdownPadrao extends StatelessWidget {
     required this.label,
     required this.itens,
     this.onChanged,
+    this.valorSelecionado,
   });
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      initialValue: null,
+      initialValue: valorSelecionado,
       dropdownColor: const Color(0xFF001B29),
       style: const TextStyle(color: Colors.white, fontSize: 16),
       decoration: InputDecoration(

@@ -3,8 +3,26 @@ import 'package:gestorsofttec/widgets/botao_padrao.dart';
 import 'package:gestorsofttec/widgets/campo_texto_padrao.dart';
 import 'package:gestorsofttec/widgets/dropdown_padrao.dart';
 
-class FormularioAnalistas extends StatelessWidget {
+class FormularioAnalistas extends StatefulWidget {
   const FormularioAnalistas({super.key});
+
+  @override
+  State<FormularioAnalistas> createState() => _FormularioAnalistasState();
+}
+
+class _FormularioAnalistasState extends State<FormularioAnalistas> {
+  final _nomeController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _telefoneController = TextEditingController();
+  String? _cargoSelecionado;
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _emailController.dispose();
+    _telefoneController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,9 +46,10 @@ class FormularioAnalistas extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Nome completo',
                       hint: 'Nome Completo',
+                      controller: _nomeController,
                     ),
                   ),
                   const SizedBox(width: 16),
@@ -47,6 +66,7 @@ class FormularioAnalistas extends StatelessWidget {
                       onChanged: (valorSelecionado) {
                         print('Cargo selecionado é :$valorSelecionado');
                       },
+                      valorSelecionado: _cargoSelecionado,
                     ),
                   ),
                 ],
@@ -56,17 +76,19 @@ class FormularioAnalistas extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'E-mail',
                       hint: 'analista@softtecsistemas.com.br',
+                      controller: _emailController,
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 1,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Telefone',
                       hint: '(00) 00000-0000',
+                      controller: _telefoneController,
                     ),
                   ),
                 ],

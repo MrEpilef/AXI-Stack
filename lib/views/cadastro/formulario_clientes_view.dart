@@ -2,9 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:gestorsofttec/widgets/botao_padrao.dart';
 import 'package:gestorsofttec/widgets/campo_texto_padrao.dart';
 
-class FormularioClientes extends StatelessWidget {
+class FormularioClientes extends StatefulWidget {
   const FormularioClientes({super.key});
 
+  @override
+  State<FormularioClientes> createState() => _FormularioClientesState();
+}
+
+class _FormularioClientesState extends State<FormularioClientes>{
+  
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -27,7 +33,7 @@ class FormularioClientes extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 2,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Razão Social',
                       hint: 'Ex: Supermercado ...',
                     ),
@@ -35,7 +41,7 @@ class FormularioClientes extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 1,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'CNPJ',
                       hint: '00.000.000/0000-00',
                     ),
@@ -47,7 +53,7 @@ class FormularioClientes extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 4,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Endereço',
                       hint: 'Ex: Avenida Oscar ...',
                     ),
@@ -55,7 +61,7 @@ class FormularioClientes extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 2,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Cidade',
                       hint: 'Goiânia',
                     ),
@@ -63,7 +69,7 @@ class FormularioClientes extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 1,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'UF',
                       hint: 'GO',
                     ),
@@ -75,7 +81,7 @@ class FormularioClientes extends StatelessWidget {
                 children: [
                   Expanded(
                     flex: 1,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Contato',
                       hint: 'Nome',
                     ),
@@ -83,7 +89,7 @@ class FormularioClientes extends StatelessWidget {
                   const SizedBox(width: 16),
                   Expanded(
                     flex: 1,
-                    child: const CampoTextoPadrao(
+                    child: CampoTextoPadrao(
                       label: 'Telefone',
                       hint: '(00) 9 0000-0000',
                     ),
@@ -119,4 +125,6 @@ class FormularioClientes extends StatelessWidget {
       ],
     );
   }
+
+
 }
