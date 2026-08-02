@@ -34,7 +34,21 @@ class Projeto {
     this.statusProjeto,
   });
 
-  
+  Map<String, dynamic> toJson(){
+    return {
+      'codigoProjeto' :codigoProjeto,
+      'nomeProjeto' : nomeProjeto,
+      'descricaoEscopo' : descricaoEscopo,
+      'prioridade' : prioridade,
+      'dataInicioPrevista' : dataInicioPrevista,
+      'dataTerminoPrevista' : dataTerminoPrevista,
+      'isAtivo' : isAtivo,
+      'cliente' : cliente.toJson(),
+      'dataCriacao' : dataCriacao,
+      'orcamentoHoras' : orcamentoHoras,
+      'statusProjeto' : statusProjeto,
+    };
+  }
 
 
   factory Projeto.fromJson(Map<String, dynamic> json) {

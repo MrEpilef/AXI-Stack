@@ -3,9 +3,9 @@ import 'package:http/http.dart' as http;
 import 'package:axi_stack/models/projeto_model.dart';
 
 class ProjetoService {
-  final String baseUrl = 'http://localhost:8080/api/clientes';
+  final String baseUrl = 'http://localhost:8080/api/projetos';
 
-  Future<Projeto?> salvarCliente(Projeto  projeto) async {
+  Future<Projeto?> salvarCliente(Projeto projeto) async {
     print('Iniciando comunicação com o servidor...');
     
     final pacoteJson = jsonEncode(Projeto.toJson());

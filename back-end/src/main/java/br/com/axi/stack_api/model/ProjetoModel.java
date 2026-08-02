@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class ProjetoModel {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long codigoProejeto;
+	private Long codigoProjeto;
 
 	private String nomeProjeto;
 
