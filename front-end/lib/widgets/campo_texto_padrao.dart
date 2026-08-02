@@ -6,7 +6,12 @@ class CampoTextoPadrao extends StatelessWidget {
   final String hint;
   final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
-  
+
+  final String? Function(String?)? validator;
+
+  final bool readOnly;
+  final VoidCallback? onTap;
+  final Widget? suffixIcon;
 
   const CampoTextoPadrao({
     super.key,
@@ -14,18 +19,29 @@ class CampoTextoPadrao extends StatelessWidget {
     required this.hint,
     this.inputFormatters,
     this.controller,
-    });
+    this.onTap,
+    this.readOnly = false,
+    this.suffixIcon,
+    this.validator,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
+    return TextFormField(
       style: const TextStyle(color: Colors.white),
+      controller: controller,
       inputFormatters: inputFormatters,
+      validator: validator,
+
+      readOnly: readOnly,
+      onTap: onTap,
+
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(color: Colors.white60),
         hintText: hint,
         hintStyle: const TextStyle(color: Colors.white30),
+        suffixIcon: suffixIcon,
         filled: true,
         fillColor: const Color(0xFF001B29),
         border: OutlineInputBorder(

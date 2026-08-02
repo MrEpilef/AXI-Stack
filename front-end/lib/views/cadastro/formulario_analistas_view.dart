@@ -59,7 +59,9 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
                       controller: _nomeController,
                     ),
                   ),
+
                   const SizedBox(width: 16),
+
                   Expanded(
                     flex: 1,
                     child: DropdownPadrao(
@@ -79,6 +81,9 @@ class _FormularioAnalistasState extends State<FormularioAnalistas> {
                       },
                     ),
                   ),
+
+                  
+
                 ],
               ),
               const SizedBox(height: 24),

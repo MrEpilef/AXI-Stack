@@ -7,47 +7,120 @@ import 'package:axi_stack/views/projetos/projeto/projeto_view.dart';
 import 'package:provider/provider.dart';
 import 'package:axi_stack/models/projeto_model.dart';
 
+
 class GradeProjetosView extends StatelessWidget {
   const GradeProjetosView({super.key});
+  
   final String jsonDeExemplo = '''
   [
     {
-      "codigoCliente": "1",
-      "titulo": "Implantação de PDV",
-      "cliente": "Mega São Luís",
-      "status": "Em Andamento",
-      "progresso": 65
+      "codigoProjeto": 1,
+      "nomeProjeto": "Implantação de PDV",
+      "descricaoEscopo": "Implantação completa do PDV nas frentes de caixa",
+      "prioridade": "Alta",
+      "dataInicioPrevista": "2026-08-01",
+      "dataTerminoPrevista": "2026-08-30",
+      "statusProjeto": "Em Andamento",
+      "isAtivo": true,
+      "cliente": {
+        "codigoCliente": 1,
+        "razaoSocial": "Mega São Luís",
+        "cnpj": "12.345.678/0001-99",
+        "endereco": "Av. Independência, 1500",
+        "cidade": "Goiânia",
+        "uf": "GO",
+        "contato": "Roberto Carlos",
+        "telefone": "(62) 98888-1111",
+        "email": "ti@megasaoluis.com.br"
+      }
     },
     {
-      "codigoCliente": "2",
-      "titulo": "Auditoria e Migração Firebird",
-      "cliente": "Supermercado Central",
-      "status": "Pendente",
-      "progresso": 10
+      "codigoProjeto": 2,
+      "nomeProjeto": "Auditoria e Migração Firebird",
+      "descricaoEscopo": "Migração completa de dados para Oracle",
+      "prioridade": "Alta",
+      "dataInicioPrevista": "2026-08-05",
+      "dataTerminoPrevista": "2026-09-10",
+      "statusProjeto": "Pendente",
+      "isAtivo": true,
+      "cliente": {
+        "codigoCliente": 2,
+        "razaoSocial": "Supermercado Central",
+        "cnpj": "98.765.432/0001-10",
+        "endereco": "Rua 44, Setor Norte",
+        "cidade": "Goiânia",
+        "uf": "GO",
+        "contato": "Maria Souza",
+        "telefone": "(62) 99999-2222",
+        "email": "gerencia@central.com.br"
+      }
     },
     {
-      "codigoCliente": "3",
-      "titulo": "Automação Fiscal de Notas",
-      "cliente": "Rede Varejo Sul",
-      "status": "Concluído",
-      "progresso": 100
+      "codigoProjeto": 3,
+      "nomeProjeto": "Automação Fiscal de Notas",
+      "descricaoEscopo": "Automação de auditoria de cupons via Python",
+      "prioridade": "Média",
+      "dataInicioPrevista": "2026-07-01",
+      "dataTerminoPrevista": "2026-07-20",
+      "statusProjeto": "Concluído",
+      "isAtivo": true,
+      "cliente": {
+        "codigoCliente": 3,
+        "razaoSocial": "Rede Varejo Sul",
+        "cnpj": "11.222.333/0001-44",
+        "endereco": "Av. Rio Verde, 500",
+        "cidade": "Aparecida de Goiânia",
+        "uf": "GO",
+        "contato": "Carlos Eduardo",
+        "telefone": "(62) 97777-3333",
+        "email": "fiscal@varejosul.com.br"
+      }
     },
     {
-      "codigoCliente": "4",
-      "titulo": "Implantação e treinamento rede varejo sul",
-      "cliente": "Rede Varejo Sul",
-      "status": "Pendente",
-      "progresso": 80
+      "codigoProjeto": 4,
+      "nomeProjeto": "Treinamento Quallity",
+      "descricaoEscopo": "Treinamento da equipe no novo módulo de estoque",
+      "prioridade": "Baixa",
+      "dataInicioPrevista": "2026-09-01",
+      "dataTerminoPrevista": "2026-09-05",
+      "statusProjeto": "Pendente",
+      "isAtivo": true,
+      "cliente": {
+        "codigoCliente": 4,
+        "razaoSocial": "Supermercado Quallity",
+        "cnpj": "55.444.333/0001-88",
+        "endereco": "Praça Central, S/N",
+        "cidade": "Trindade",
+        "uf": "GO",
+        "contato": "Ana Clara",
+        "telefone": "(62) 96666-4444",
+        "email": "rh@quallity.com.br"
+      }
     },
     {
-      "codigoCliente": "5",
-      "titulo": "Treinamento Quallity",
-      "cliente": "Supermercado Quallity",
-      "status": "Pendente",
-      "progresso": 98
+      "codigoProjeto": 5,
+      "nomeProjeto": "Configuração Servidor Dell",
+      "descricaoEscopo": "Setup de RAID e instalação de Windows Server",
+      "prioridade": "Alta",
+      "dataInicioPrevista": "2026-08-15",
+      "dataTerminoPrevista": "2026-08-18",
+      "statusProjeto": "Em Andamento",
+      "isAtivo": true,
+      "cliente": {
+        "codigoCliente": 5,
+        "razaoSocial": "Atacadão do Povo",
+        "cnpj": "77.888.999/0001-22",
+        "endereco": "Rodovia BR-153, Km 10",
+        "cidade": "Senador Canedo",
+        "uf": "GO",
+        "contato": "Felipe Marques",
+        "telefone": "(62) 95555-5555",
+        "email": "infra@atacadaopovo.com.br"
+      }
     }
   ]
   ''';
+
 
   // Função que transforma o Texto JSON na Lista de Objetos
   List<Projeto> _carregarProjetos() {
@@ -67,12 +140,6 @@ class GradeProjetosView extends StatelessWidget {
             context.read<ProjetoController>().mudarTela(TelaProjeto.lista);
           },
         );
-      /* case TelaProjeto.detalheProjeto:
-        return DetalheProjetoView(
-          onVoltar: () {
-            context.read<ProjetoController>().mudarTela(TelaProjeto.lista);
-          },
-        ); */
       case TelaProjeto.visualizarProjeto:
         return ProjetoView(
           onVoltar: () {
@@ -162,23 +229,29 @@ class GradeProjetosView extends StatelessWidget {
   Widget _construirCardProjeto(BuildContext context, Projeto projeto) {
     Color corDestaque;
     IconData iconeStatus;
+    int progressoSimulado = 0;
 
-    if (projeto.status == 'Concluído') {
+    if (projeto.statusProjeto == 'Concluído') {
       corDestaque = const Color(0xFF2ECC71);
       iconeStatus = Icons.check_circle;
-    } else if (projeto.status == 'Pendente') {
+      progressoSimulado = 100;
+
+    } else if (projeto.statusProjeto == 'Pendente') {
       corDestaque = const Color(0xFFF39C12);
       iconeStatus = Icons.folder_special;
+      progressoSimulado = 10;
+
     } else {
       corDestaque = const Color(0xFF3498DB);
       iconeStatus = Icons.folder;
+      progressoSimulado = 65;
     }
 
     return GestureDetector(
       onTap: () {
         context.read<ProjetoController>().setProjetoAtivo(projeto);
         context.read<ProjetoController>().mudarTela(TelaProjeto.visualizarProjeto);
-        print('Navegando para a visualização do projeto ${projeto.cliente}');
+        print('Navegando para a visualização do projeto ${projeto.cliente.razaoSocial}');
       },
       child: ClipRRect(
         borderRadius: BorderRadiusGeometry.circular(16),
@@ -208,7 +281,7 @@ class GradeProjetosView extends StatelessWidget {
                   children: [
                     Expanded(
                       child: Text(
-                        projeto.cliente,
+                        projeto.cliente.razaoSocial,
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 18,
@@ -226,7 +299,7 @@ class GradeProjetosView extends StatelessWidget {
 
                 // CLIENTE
                 Text(
-                  'Projeto: ${projeto.titulo}',
+                  'Projeto: ${projeto.nomeProjeto}',
                   style: TextStyle(color: Colors.grey[400], fontSize: 14),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
@@ -239,7 +312,7 @@ class GradeProjetosView extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      projeto.status,
+                      projeto.statusProjeto ?? 'Pendente',
                       style: TextStyle(
                         color: corDestaque,
                         fontSize: 12,
@@ -247,7 +320,7 @@ class GradeProjetosView extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '${projeto.progresso}%',
+                      '$progressoSimulado%',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 12,
@@ -262,7 +335,7 @@ class GradeProjetosView extends StatelessWidget {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: LinearProgressIndicator(
-                    value: projeto.progresso / 100,
+                    value: progressoSimulado / 100,
                     backgroundColor: Colors.white.withValues(alpha: 0.05),
                     valueColor: AlwaysStoppedAnimation<Color>(corDestaque),
                     minHeight: 6,
