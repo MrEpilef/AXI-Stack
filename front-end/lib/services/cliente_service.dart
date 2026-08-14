@@ -33,4 +33,25 @@ class ClienteService {
       return null;
     }
   }
+  Future <List<Cliente>> buscarListaCLientes() async {
+    print('Buscando clientes no servidor...');
+    
+    try {
+      final response = await http.get(Uri.parse(baseUrl));
+
+      if (response.statusCode == 200) {
+        
+        List<dynamic> retornoBackend = jsonDecode(response.body);
+        
+        
+        return retornoBackend.map((json) => Cliente.fromJson(json)).toList();
+      } else {
+        print('Erro no servidor ao buscar clientes: ${response.statusCode}');
+        return []; 
+      }
+    } catch (e) {
+      print('Erro de conexão ao buscar clientes: $e');
+      return []; 
+    }
+  }
 }

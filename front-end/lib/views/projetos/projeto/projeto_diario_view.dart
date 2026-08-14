@@ -24,7 +24,7 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: 350,
+                width: 300,
                 decoration: BoxDecoration(
                   color: const Color(0xFF001B29),
                   borderRadius: BorderRadius.circular(16),

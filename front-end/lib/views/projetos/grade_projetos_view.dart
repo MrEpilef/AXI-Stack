@@ -1,137 +1,41 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
-import 'dart:convert';
 import 'package:axi_stack/controllers/projeto_controller.dart';
 import 'package:axi_stack/views/projetos/novo_projeto_view.dart';
 import 'package:axi_stack/views/projetos/projeto/projeto_view.dart';
 import 'package:provider/provider.dart';
 import 'package:axi_stack/models/projeto_model.dart';
+import 'package:axi_stack/services/projeto_service.dart';
 
-
-class GradeProjetosView extends StatelessWidget {
+class GradeProjetosView extends StatefulWidget {
   const GradeProjetosView({super.key});
+
+  @override
+  State<GradeProjetosView> createState() => _GradeProjetosViewState();
+}
+
+class _GradeProjetosViewState extends State<GradeProjetosView> {
   
-  final String jsonDeExemplo = '''
-  [
-    {
-      "codigoProjeto": 1,
-      "nomeProjeto": "Implantação de PDV",
-      "descricaoEscopo": "Implantação completa do PDV nas frentes de caixa",
-      "prioridade": "Alta",
-      "dataInicioPrevista": "2026-08-01",
-      "dataTerminoPrevista": "2026-08-30",
-      "statusProjeto": "Em Andamento",
-      "isAtivo": true,
-      "cliente": {
-        "codigoCliente": 1,
-        "razaoSocial": "Mega São Luís",
-        "cnpj": "12.345.678/0001-99",
-        "endereco": "Av. Independência, 1500",
-        "cidade": "Goiânia",
-        "uf": "GO",
-        "contato": "Roberto Carlos",
-        "telefone": "(62) 98888-1111",
-        "email": "ti@megasaoluis.com.br"
-      }
-    },
-    {
-      "codigoProjeto": 2,
-      "nomeProjeto": "Auditoria e Migração Firebird",
-      "descricaoEscopo": "Migração completa de dados para Oracle",
-      "prioridade": "Alta",
-      "dataInicioPrevista": "2026-08-05",
-      "dataTerminoPrevista": "2026-09-10",
-      "statusProjeto": "Pendente",
-      "isAtivo": true,
-      "cliente": {
-        "codigoCliente": 2,
-        "razaoSocial": "Supermercado Central",
-        "cnpj": "98.765.432/0001-10",
-        "endereco": "Rua 44, Setor Norte",
-        "cidade": "Goiânia",
-        "uf": "GO",
-        "contato": "Maria Souza",
-        "telefone": "(62) 99999-2222",
-        "email": "gerencia@central.com.br"
-      }
-    },
-    {
-      "codigoProjeto": 3,
-      "nomeProjeto": "Automação Fiscal de Notas",
-      "descricaoEscopo": "Automação de auditoria de cupons via Python",
-      "prioridade": "Média",
-      "dataInicioPrevista": "2026-07-01",
-      "dataTerminoPrevista": "2026-07-20",
-      "statusProjeto": "Concluído",
-      "isAtivo": true,
-      "cliente": {
-        "codigoCliente": 3,
-        "razaoSocial": "Rede Varejo Sul",
-        "cnpj": "11.222.333/0001-44",
-        "endereco": "Av. Rio Verde, 500",
-        "cidade": "Aparecida de Goiânia",
-        "uf": "GO",
-        "contato": "Carlos Eduardo",
-        "telefone": "(62) 97777-3333",
-        "email": "fiscal@varejosul.com.br"
-      }
-    },
-    {
-      "codigoProjeto": 4,
-      "nomeProjeto": "Treinamento Quallity",
-      "descricaoEscopo": "Treinamento da equipe no novo módulo de estoque",
-      "prioridade": "Baixa",
-      "dataInicioPrevista": "2026-09-01",
-      "dataTerminoPrevista": "2026-09-05",
-      "statusProjeto": "Pendente",
-      "isAtivo": true,
-      "cliente": {
-        "codigoCliente": 4,
-        "razaoSocial": "Supermercado Quallity",
-        "cnpj": "55.444.333/0001-88",
-        "endereco": "Praça Central, S/N",
-        "cidade": "Trindade",
-        "uf": "GO",
-        "contato": "Ana Clara",
-        "telefone": "(62) 96666-4444",
-        "email": "rh@quallity.com.br"
-      }
-    },
-    {
-      "codigoProjeto": 5,
-      "nomeProjeto": "Configuração Servidor Dell",
-      "descricaoEscopo": "Setup de RAID e instalação de Windows Server",
-      "prioridade": "Alta",
-      "dataInicioPrevista": "2026-08-15",
-      "dataTerminoPrevista": "2026-08-18",
-      "statusProjeto": "Em Andamento",
-      "isAtivo": true,
-      "cliente": {
-        "codigoCliente": 5,
-        "razaoSocial": "Atacadão do Povo",
-        "cnpj": "77.888.999/0001-22",
-        "endereco": "Rodovia BR-153, Km 10",
-        "cidade": "Senador Canedo",
-        "uf": "GO",
-        "contato": "Felipe Marques",
-        "telefone": "(62) 95555-5555",
-        "email": "infra@atacadaopovo.com.br"
-      }
-    }
-  ]
-  ''';
+  // ==========================================
+  // CHAVE DE TROCA DE AMBIENTE
+  // ==========================================
+  // Para usar sem o Java rodando: ProjetoServiceMock()
+  // Para usar o Java + Banco de Dados: ProjetoServiceHttp()
+  final IProjetoService _projetoService = ProjetoServiceMock(); 
 
+  late Future<List<Projeto>> _futureProjetos;
 
-  // Função que transforma o Texto JSON na Lista de Objetos
-  List<Projeto> _carregarProjetos() {
-    List<dynamic> lista = jsonDecode(jsonDeExemplo);
-    return lista.map((item) => Projeto.fromJson(item)).toList();
+  @override
+  void initState() {
+    super.initState();
+    // Inicia a busca logo que a tela abre
+    _futureProjetos = _projetoService.buscarListaProjetos();
   }
 
   @override
   Widget build(BuildContext context) {
-    final projetos = _carregarProjetos();
-
+    
+    // A sua lógica de roteamento pelo Provider continua intacta!
     final telaAtual = context.watch<ProjetoController>().telaAtual;
     switch (telaAtual) {
       case TelaProjeto.novoProjeto:
@@ -143,9 +47,7 @@ class GradeProjetosView extends StatelessWidget {
       case TelaProjeto.visualizarProjeto:
         return ProjetoView(
           onVoltar: () {
-            context.read<ProjetoController>().mudarTela(
-              TelaProjeto.lista,
-            );
+            context.read<ProjetoController>().mudarTela(TelaProjeto.lista);
           },
         );
       case TelaProjeto.lista:
@@ -156,29 +58,65 @@ class GradeProjetosView extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFF000D15),
       body: Container(
-        decoration: BoxDecoration(
+        /* decoration: const BoxDecoration(
           image: DecorationImage(
             image: AssetImage("assets/fundo.png"),
             fit: BoxFit.cover,
-            ),
-            
-        ),
+          ),
+        ), */
         child: Stack(
           children: [
             Positioned.fill(
-              child: SingleChildScrollView(
-                padding: const EdgeInsets.all(32.0),
-        
-                child: Wrap(
-                  spacing: 24.0,
-                  runSpacing: 24.0,
-                  children: projetos.map((projetoAtual) {
-                    return _construirCardProjeto(context, projetoAtual);
-                  }).toList(),
-                ),
+              // FUTURE BUILDER
+              child: FutureBuilder<List<Projeto>>(
+                future: _futureProjetos,
+                builder: (context, snapshot) {
+                  
+                  // AGUARDANDO CARREGAMENTO
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(color: Color(0xFFF14004)),
+                    );
+                  }
+
+                  // ERRO DE REDE
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text(
+                        'Erro ao carregar dados: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.redAccent),
+                      ),
+                    );
+                  }
+
+                  final projetos = snapshot.data ?? [];
+
+                  
+                  if (projetos.isEmpty) {
+                    return const Center(
+                      child: Text(
+                        'Nenhum projeto encontrado.',
+                        style: TextStyle(color: Colors.white54, fontSize: 18),
+                      ),
+                    );
+                  }
+
+                  // REDESENHA A GRADE
+                  return SingleChildScrollView(
+                    padding: const EdgeInsets.all(32.0),
+                    child: Wrap(
+                      spacing: 24.0,
+                      runSpacing: 24.0,
+                      children: projetos.map((projetoAtual) {
+                        return _construirCardProjeto(context, projetoAtual);
+                      }).toList(),
+                    ),
+                  );
+                },
               ),
             ),
         
+            // BOTÃO FLUTUANTE DE NOVO PROJETO
             Positioned(
               bottom: 32.0,
               left: 32.0,
@@ -200,11 +138,8 @@ class GradeProjetosView extends StatelessWidget {
                     ),
                   ),
                   onPressed: () {
-                    //lógica para controler futuro
                     print('Novo Projeto clicado!');
-                    context.read<ProjetoController>().mudarTela(
-                      TelaProjeto.novoProjeto,
-                    );
+                    context.read<ProjetoController>().mudarTela(TelaProjeto.novoProjeto);
                   },
                   icon: const Icon(Icons.add, color: Colors.white),
                   label: const Text(
@@ -224,7 +159,7 @@ class GradeProjetosView extends StatelessWidget {
   }
 
   // ==================================================
-  //                  WIDGET DO CARD
+  //        WIDGET DO CARD 
   // ==================================================
   Widget _construirCardProjeto(BuildContext context, Projeto projeto) {
     Color corDestaque;
@@ -235,12 +170,10 @@ class GradeProjetosView extends StatelessWidget {
       corDestaque = const Color(0xFF2ECC71);
       iconeStatus = Icons.check_circle;
       progressoSimulado = 100;
-
     } else if (projeto.statusProjeto == 'Pendente') {
       corDestaque = const Color(0xFFF39C12);
       iconeStatus = Icons.folder_special;
       progressoSimulado = 10;
-
     } else {
       corDestaque = const Color(0xFF3498DB);
       iconeStatus = Icons.folder;
@@ -269,12 +202,9 @@ class GradeProjetosView extends StatelessWidget {
                 width: 1,
               ),
             ),
-
-
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // TÍTULO E ÍCONE
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -296,18 +226,13 @@ class GradeProjetosView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-
-                // CLIENTE
                 Text(
                   'Projeto: ${projeto.nomeProjeto}',
                   style: TextStyle(color: Colors.grey[400], fontSize: 14),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-
-                const SizedBox(height: 32),
-                Spacer(),
-                // TEXTOS DA BARRA DE PROGRESSO
+                const Spacer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -330,8 +255,6 @@ class GradeProjetosView extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 8),
-
-                // BARRA DE PROGRESSO
                 ClipRRect(
                   borderRadius: BorderRadius.circular(8),
                   child: LinearProgressIndicator(

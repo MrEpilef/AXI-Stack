@@ -12,6 +12,7 @@ class CampoTextoPadrao extends StatelessWidget {
   final bool readOnly;
   final VoidCallback? onTap;
   final Widget? suffixIcon;
+  final FocusNode? focusNode;
 
   const CampoTextoPadrao({
     super.key,
@@ -23,6 +24,7 @@ class CampoTextoPadrao extends StatelessWidget {
     this.readOnly = false,
     this.suffixIcon,
     this.validator,
+    this.focusNode,
   });
 
   @override
@@ -32,7 +34,7 @@ class CampoTextoPadrao extends StatelessWidget {
       controller: controller,
       inputFormatters: inputFormatters,
       validator: validator,
-
+      focusNode: focusNode,
       readOnly: readOnly,
       onTap: onTap,
 

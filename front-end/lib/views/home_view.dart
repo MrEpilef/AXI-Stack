@@ -4,7 +4,7 @@ import 'dashboard_view.dart';
 import 'cadastro/cadastro_view.dart';
 import 'projetos/grade_projetos_view.dart';
 import 'relatorios_view.dart';
-import 'configuracao_view.dart';
+import 'configuracao/configuracao_view.dart';
 
 class HomeView extends StatefulWidget {
 
