@@ -13,6 +13,7 @@ class ProjetoDiarioView extends StatefulWidget {
 class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
   DateTime _dataSelecionada = DateTime.now();
   bool _mostraPainel = false;
+  bool _assinarDigitalmente = false;
 
   @override
   Widget build(BuildContext context) {
@@ -55,11 +56,12 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
                   ),
                 ),
               ),
+
+              const SizedBox(width: 32),
+
+              if (_mostraPainel) Expanded(child: _construirPainelOS()),
             ],
           ),
-          const SizedBox(height: 32),
-
-          if (_mostraPainel) _construirPainelOS(),
         ],
       ),
     );
@@ -71,89 +73,154 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
       filter: {"#": RegExp(r'[0-9]')},
     );
 
-    return Column(
-      children: [
-        Row(
+    return Container(
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: Colors.white.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Expanded(
-              child: CampoTextoPadrao(
-                label: "Adicionar Serviço",
-                hint: "Treinamento ...",
+            Text(
+              'Serviços: ',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+
+            SizedBox(height: 12),
+
+            Row(
+              children: [
+                Expanded(
+                  child: CampoTextoPadrao(
+                    label: "Adicionar Serviço",
+                    hint: "Treinamento ...",
+                    maxLines: null,
+                  ),
+                ),
+              ],
+            ),
+
+            Divider(
+              height: 40,
+              thickness: 1,
+            ),
+
+
+            Text('Horário :', 
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+              ),
+            ),
+
+            SizedBox(height: 12),
+
+
+            Row(
+              children: [
+                Expanded(
+                  flex: 1,
+                  child: CampoTextoPadrao(
+                    label: "1º Entrada",
+                    hint: "08:00",
+                    inputFormatters: [mascaraHorario],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: CampoTextoPadrao(
+                    label: "1º Saída",
+                    hint: "12:00",
+                    inputFormatters: [mascaraHorario],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: CampoTextoPadrao(
+                    label: "2º Entrada",
+                    hint: "13:15",
+                    inputFormatters: [mascaraHorario],
+                  ),
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  flex: 1,
+                  child: CampoTextoPadrao(
+                    label: "2º Saída",
+                    hint: "18:00",
+                    inputFormatters: [mascaraHorario],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            Divider(
+              height: 10,
+              thickness: 1,
+            ),
+
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Assinar Digitalmente OS ?',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+
+
+                        Switch(
+                          value: _assinarDigitalmente,
+                          
+                          activeThumbColor: const Color(0xFFFF4103),
+                          activeTrackColor: const Color(0xFFFF4103).withValues(alpha: 0.3),
+                          inactiveThumbColor: Colors.grey[350],
+                          inactiveTrackColor: Color(0xFF001B29),
+                          //inactiveTrackColor: Colors.white.withValues(alpha: 0.1),
+                          
+
+
+
+
+                          onChanged: (bool valorAlterado) {
+                            setState(() {
+                              _assinarDigitalmente = valorAlterado;
+                            });
+                            print("Switch mudou para: $_assinarDigitalmente");
+                          },
+                        ),
+
+
+                        
+                        
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-
-        const SizedBox(height: 24),
-
-        Row(
-          children: [
-            Expanded(
-              flex: 1,
-              child: CampoTextoPadrao(
-                label: "1º Entrada",
-                hint: "08:00",
-                inputFormatters: [mascaraHorario],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: CampoTextoPadrao(
-                label: "2º Entrada",
-                hint: "12:00",
-                inputFormatters: [mascaraHorario],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: CampoTextoPadrao(
-                label: "2º Entrada",
-                hint: "13:15",
-                inputFormatters: [mascaraHorario],
-              ),
-            ),
-            const SizedBox(width: 10),
-            Expanded(
-              flex: 1,
-              child: CampoTextoPadrao(
-                label: "2º Saída",
-                hint: "18:00",
-                inputFormatters: [mascaraHorario],
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 24),
-
-        Row(
-          children: [
-            Expanded(
-              child: CampoTextoPadrao(
-                label: "Assinar Digitalmente a O.S",
-                hint: "Horário feito",
-              ),
-            ),
-          ],
-        ),
-
-        const SizedBox(height: 24),
-
-        Row(
-          children: [
-            Expanded(
-              child: BotaoPadrao(
-                label: "Salvar",
-                onPressed: () {
-                  print("Salvar O.S dia: $_dataSelecionada");
-                },
-              ),
-            ),
-          ],
-        ),
-      ],
+      ),
     );
   }
 }

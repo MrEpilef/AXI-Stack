@@ -13,6 +13,7 @@ class CampoTextoPadrao extends StatelessWidget {
   final VoidCallback? onTap;
   final Widget? suffixIcon;
   final FocusNode? focusNode;
+  final int? maxLines;
 
   const CampoTextoPadrao({
     super.key,
@@ -25,6 +26,7 @@ class CampoTextoPadrao extends StatelessWidget {
     this.suffixIcon,
     this.validator,
     this.focusNode,
+    this.maxLines = 1,
   });
 
   @override
@@ -37,6 +39,7 @@ class CampoTextoPadrao extends StatelessWidget {
       focusNode: focusNode,
       readOnly: readOnly,
       onTap: onTap,
+      maxLines: maxLines,
 
       decoration: InputDecoration(
         labelText: label,

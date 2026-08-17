@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 
-class DashboardView extends StatelessWidget {
+class DashboardView extends StatefulWidget {
   const DashboardView({super.key});
 
+  @override
+  State<DashboardView> createState() => _DashBoardViewState();
+}
+
+class _DashBoardViewState extends State<DashboardView>{
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -37,16 +42,17 @@ class DashboardView extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16)
                     ),  
 
-                    child: Column(
-                      children: [
-
-                        //=======================
-                        //       TÍTULO
-                        //=======================
-                        Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                      
+                          //=======================
+                          //       TÍTULO
+                          //=======================
+                          
+                          Row(
                             children: [
                               Text('Dias sem O.S realizadas', 
                                 style: TextStyle(
@@ -54,25 +60,57 @@ class DashboardView extends StatelessWidget {
                                   color: Colors.white
                                 ),
                               ),
-                              
+                             
                               SizedBox(width: 8),
-                        
+                          
                               Icon(Icons.report_gmailerrorred, color: Colors.white,),
                             ],
                           ),
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Técnico 1',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
+
+                          
+                          Divider(
+                            color: Colors.white60,
+                            height: 20,
+                            thickness: 1 ,
+                          ),
+
+                          
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+
+                              Text('Técnico 1',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
                               ),
-                            )
-                          ],
-                        )
-                      ],
+
+                              Text('Técnico 2',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
+                              ),
+
+                              Text('Técnico 3',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
+                              ),
+
+                              Text('Técnico 4',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 24,
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
+                      ),
                     ),
                   ),
 
@@ -92,21 +130,85 @@ class DashboardView extends StatelessWidget {
 
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text('Implantadores em campo', 
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text('Implantadores em campo', 
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white
+                                ),
                               ),
-                            ),
-                            
-                            SizedBox(width: 8),
-                      
-                            Icon(Icons.report_gmailerrorred, color: Colors.white,),
-                          ],
-                        ),
+                                
+                              SizedBox(width: 8),
+                          
+                              Icon(Icons.report_gmailerrorred, color: Colors.white,),
+                            ],
+                          ),
+
+                          Divider(
+                            color: Colors.white60,
+                            height: 20,
+                            thickness: 1 ,
+                          ),
+
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Felipe',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                  Spacer(),
+                                  Icon(Icons.view_headline_rounded, color: Colors.white60,),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text('Bruno',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text('Paulo',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+
+                              Row(
+                                children: [
+                                  Text('Pedrão',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          )
+
+
+                        ],
+                      ),
                     ),
                    
                   ),
@@ -118,12 +220,13 @@ class DashboardView extends StatelessWidget {
             SizedBox(width: 16),
             
             //=======================
-            // DIAS SEM O.S REALIZADA
+            //      FINANCEIRO
             //=======================
             Expanded(
               flex: 3,
               child: Column(
                 children: [
+
                   Container(
                     height: 616,
                     decoration: BoxDecoration(
@@ -135,21 +238,35 @@ class DashboardView extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(16.0),
-                          child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text('Financeiro', 
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+
+                            children: [
+                              Row(
+                                children: [
+                                  Text('Financeiro', 
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white
+                                    ),
                                   ),
+                                  
+                                  SizedBox(width: 8),
+                              
+                                  Icon(Icons.report_gmailerrorred, color: Colors.white,),
+                                ],
+                              ),
+
+                              Divider(
+                                  color: Colors.white60,
+                                  height: 20,
+                                  thickness: 1 ,
                                 ),
-                                
-                                SizedBox(width: 8),
-                          
-                                Icon(Icons.report_gmailerrorred, color: Colors.white,),
-                              ],
-                            ),
+
+
+
+                            ],
+                          ),
                         ),
                       ],
 

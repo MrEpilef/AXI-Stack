@@ -1,3 +1,4 @@
+import 'package:axi_stack/widgets/botao_padrao.dart';
 import 'package:flutter/material.dart';
 
 class ProjetoFinanceiroView extends StatelessWidget {
@@ -5,14 +6,28 @@ class ProjetoFinanceiroView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Text('Financeiro', 
-      style: TextStyle(
-        color: Colors.white,
-        fontSize: 24,
-        fontWeight: FontWeight.bold
+    return Stack(
+      children: [
+        SingleChildScrollView(
+          child: Column(
+            children: [
+              
+
+            ],
+          )
         ),
-      )
+
+
+        Positioned(
+          left: 32,
+          bottom: 32,
+          child: BotaoPadrao(
+            label: 'Lançar despesa',
+            icone: Icons.add,
+            onPressed: (){}
+          )
+        )
+      ],
     );
   }
   
