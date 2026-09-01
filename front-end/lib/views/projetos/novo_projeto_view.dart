@@ -321,23 +321,28 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                     cliente: _clienteSelecionado!,
                   );
 
-                  final IProjetoService servico = ProjetoServiceMock();
+                  final IProjetoService servico = ProjetoServiceHttp();
 
                   Projeto? projetoSalvo = await servico.salvarProjeto(novoProjeto);
 
-                  if (projetoSalvo != null &&
-                      projetoSalvo.codigoProjeto != null) {
-                    if (!context.mounted) return;
+                  if (projetoSalvo != null) {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(
-                          'Sucesso! Analista salvo com o Código: ${projetoSalvo.codigoProjeto}',
+                        behavior: SnackBarBehavior.floating,
+                        backgroundColor: const Color(0xFF001B29),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          side: const BorderSide(color: Colors.green, width: 1.5), // Borda verde!
                         ),
-                        backgroundColor: Colors.green,
+                        content: Text(
+                          'Sucesso! Projeto salvo (Código: ${projetoSalvo.codigoProjeto ?? "Gerado"})',
+                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                        ),
                       ),
                     );
                   }
+                 
                   print(novoProjeto.toJson());
                 }
               },

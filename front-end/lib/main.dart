@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
@@ -7,23 +8,24 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
+  if (Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+    await windowManager.ensureInitialized();
 
-  // Configurações da janela
-  WindowOptions windowOptions = const WindowOptions(
-    size: Size(1200, 800), // Tamanho da tela ao abrir aplicação
-    center: true, // Começa no centro do monitor
-    backgroundColor: Colors
-        .transparent, 
-    skipTaskbar: false,
-    titleBarStyle: TitleBarStyle.hidden,
-  );
+    // Configurações da janela exclusivas para PC
+    WindowOptions windowOptions = const WindowOptions(
+      size: Size(1200, 800), 
+      center: true, 
+      backgroundColor: Colors.transparent, 
+      skipTaskbar: false,
+      titleBarStyle: TitleBarStyle.hidden,
+    );
 
-  // Aguarda a janela ficar pronta, mostra e foca nela
-  windowManager.waitUntilReadyToShow(windowOptions, () async {
-    await windowManager.show();
-    await windowManager.focus();
-  });
+    // Aguarda a janela ficar pronta, mostra e foca nela
+    windowManager.waitUntilReadyToShow(windowOptions, () async {
+      await windowManager.show();
+      await windowManager.focus();
+    });
+  }
 
   runApp(
     MultiProvider(providers: [

@@ -11,7 +11,7 @@ abstract class IProjetoService {
 }
 
 class ProjetoServiceHttp implements IProjetoService {
-  final String baseUrl = 'http://localhost:8080/api/projetos';
+  final String baseUrl = 'http://localhost:8080/api/projeto';
 
   @override
   Future<Projeto?> salvarProjeto(Projeto projeto) async {

@@ -18,7 +18,6 @@ class OrdemServico {
   final double? horasTrabalhadas;
   final bool isFaturada;
   final String? statusOs;
-
   final Projeto projeto;
   final Analista analista;
 

@@ -4,7 +4,7 @@ import 'package:axi_stack/models/analista_model.dart';
 
 class AnalistaService {
   
-  final String baseUrl = 'http://localhost:8080/api/analistas';
+  final String baseUrl = 'http://localhost:8080/api/analista';
 
   Future<Analista?> salvarAnalista(Analista analista) async {
     final pacoteJson = jsonEncode(analista.toJson());
@@ -20,7 +20,7 @@ class AnalistaService {
         final retornoBackend = jsonDecode(response.body);
         return Analista.fromJson(retornoBackend);
       } else {
-        print('Erro no servidor: ${response.statusCode}');
+          print('Erro no servidor: ${response.statusCode}');
         return null;
       }
      

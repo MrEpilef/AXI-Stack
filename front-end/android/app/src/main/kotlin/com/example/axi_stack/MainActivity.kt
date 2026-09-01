@@ -1,4 +1,4 @@
-package com.example.curso_de_flutter
+package com.example.axi_stack
 
 import io.flutter.embedding.android.FlutterActivity
 
