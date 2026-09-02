@@ -321,7 +321,7 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                     cliente: _clienteSelecionado!,
                   );
 
-                  final IProjetoService servico = ProjetoServiceHttp();
+                  final IProjetoService servico = ProjetoServiceMock();
 
                   Projeto? projetoSalvo = await servico.salvarProjeto(novoProjeto);
 

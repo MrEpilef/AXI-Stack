@@ -21,7 +21,7 @@ class _GradeProjetosViewState extends State<GradeProjetosView> {
   // ==========================================
   // Para usar sem o Java rodando: ProjetoServiceMock()
   // Para usar o Java + Banco de Dados: ProjetoServiceHttp()
-  final IProjetoService _projetoService = ProjetoServiceHttp(); 
+  final IProjetoService _projetoService = ProjetoServiceMock(); 
 
   late Future<List<Projeto>> _futureProjetos;
 

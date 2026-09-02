@@ -42,12 +42,18 @@ dependencies:
     sdk: flutter
   intl: ^0.20.2
   dio: ^5.11.0
-  
+  flutter_launcher_icons: "^0.14.1"
+  pdf: ^3.13.0
+  printing: ^5.15.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
     
+flutter_launcher_icons:
+  image_path: "assets/logo_fundo.png"
+  android: true
+  ios: true
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is

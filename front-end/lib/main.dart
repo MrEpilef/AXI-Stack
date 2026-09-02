@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:window_manager/window_manager.dart';
-import '/views/home_view.dart';
+import 'views/home/home_view.dart';
 import 'package:axi_stack/controllers/projeto_controller.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 

@@ -68,7 +68,7 @@ class Projeto {
       isAtivo: json['isAtivo'] ?? true,
       //isSlaCritico: json['isAtivo'] ?? false,
 
-      cliente: Cliente.fromJson(json['isSlaCritico']),
+      cliente: Cliente.fromJson(json['cliente']),
     );
   }
 }
