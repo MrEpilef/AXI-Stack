@@ -16,7 +16,7 @@ import br.com.axi.stack_api.model.ClienteModel;
 import br.com.axi.stack_api.repository.ClienteRepository;
 
 @RestController
-@RequestMapping("/api/clientes")
+@RequestMapping("/api/cliente")
 @CrossOrigin(origins = "*")
 public class ClienteController {
     

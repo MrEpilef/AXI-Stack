@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "ordens_servico")
+@Table(name = "ordem_servico")
 public class OrdemServicoModel {
 
     @Id

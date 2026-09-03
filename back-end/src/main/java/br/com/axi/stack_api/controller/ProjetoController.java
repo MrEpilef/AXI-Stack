@@ -7,8 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/projetos")
+@RequestMapping("/api/projeto")
 @CrossOrigin(origins = "*")
 public class ProjetoController {
 
@@ -19,5 +21,11 @@ public class ProjetoController {
         public ResponseEntity<ProjetoModel> salvarProjeto(@RequestBody ProjetoModel projeto){
             ProjetoModel projetoSalvo = projetoRepository.save(projeto);
             return ResponseEntity.status(HttpStatus.CREATED).body(projetoSalvo);
+        }
+
+        @GetMapping
+        public ResponseEntity<List<ProjetoModel>> listarProjetos() {
+            List<ProjetoModel> lista = projetoRepository.findAll();
+            return ResponseEntity.ok(lista);
         }
 }

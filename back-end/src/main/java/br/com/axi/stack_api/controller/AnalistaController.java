@@ -15,7 +15,7 @@ import br.com.axi.stack_api.model.AnalistaModel;
 import br.com.axi.stack_api.repository.AnalistaRepository;
 
 @RestController
-@RequestMapping("/api/analistas")
+@RequestMapping("/api/analista")
 @CrossOrigin(origins = "*")
 public class AnalistaController {
     

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/ordens_servico")
+@RequestMapping("/api/ordem_servico")
 @CrossOrigin(origins = "*")
 public class OrdemServicoController {
 
@@ -26,4 +26,6 @@ public class OrdemServicoController {
         OrdemServicoModel ordemServicoSalva = ordemServicoRepository.save(ordemServico);
         return ResponseEntity.status(HttpStatus.CREATED).body(ordemServicoSalva);
     }
+
+
 }

@@ -1,5 +1,6 @@
 package br.com.axi.stack_api.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
@@ -8,7 +9,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
-@Table(name = "projetos")
+@Table(name = "projeto")
 public class ProjetoModel {
 	@Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,8 +22,11 @@ public class ProjetoModel {
 
 	private String statusProjeto;
 	private String prioridade;
-	
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataInicioPrevista;
+
+	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataTerminoPrevista;
 	
 	private Double orcamentoHoras;
