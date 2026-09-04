@@ -1,4 +1,4 @@
-# GestorSofttec
+# Axiom Stack
 
 ![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
@@ -8,7 +8,7 @@
 
 ## Visão Geral
 
-O **GestorSofttec** está sendo desenvolvido para resolver problemas reais de negócio, entregando uma interface fluida no mobile (Android/iOS) sem abrir mão da robustez no processamento de dados. O objetivo principal do projeto é otimizar rotinas operacionais e facilitar a tomada de decisão através de uma UI/UX limpa e reativa.
+O **Axiom Stack** está sendo desenvolvido para resolver problemas reais de negócio, entregando uma interface fluida no mobile (Android/iOS) sem abrir mão da robustez no processamento de dados. O objetivo principal do projeto é otimizar rotinas operacionais e facilitar a tomada de decisão através de uma UI/UX limpa e reativa.
 
 ## Arquitetura e Integração (Visão Fullstack)
 
