@@ -1,46 +1,50 @@
 # Axiom Stack
 
-![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
-![Dart](https://img.shields.io/badge/dart-%230175C2.svg?style=for-the-badge&logo=dart&logoColor=white)
-![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
+Solução fullstack multiplataforma voltada para gestão de projetos, ordens de serviço, clientes e analistas, integrando um cliente reativo em Flutter a uma API robusta em Java Spring Boot com persistência em MySQL.
 
-> Aplicativo multiplataforma em processo de desenvolvimento focado na automação de processos comerciais e gestão inteligente de dados.
+---
 
-## Visão Geral
+## 🏛️ Arquitetura da Solução
 
-O **Axiom Stack** está sendo desenvolvido para resolver problemas reais de negócio, entregando uma interface fluida no mobile (Android/iOS) sem abrir mão da robustez no processamento de dados. O objetivo principal do projeto é otimizar rotinas operacionais e facilitar a tomada de decisão através de uma UI/UX limpa e reativa.
+O ecossistema é dividido em camadas desacopladas para garantir escalabilidade, manutenibilidade e portabilidade:
 
-## Arquitetura e Integração (Visão Fullstack)
+* **Front-end (Client):** Interface multiplataforma construída em Flutter, consumindo serviços RESTful com tipagem estrita e reatividade.
+* **Back-end (API):** Aplicação Java Spring Boot estruturada em arquitetura em camadas (Controller, Service, Repository), gerenciando regras de negócio e validações.
+* **Persistência:** Banco de dados relacional MySQL 8, com mapeamento objeto-relacional (ORM) gerenciado via Spring Data JPA / Hibernate.
+* **Infraestrutura & Deploy:** Contêineres orquestrados via Docker Compose em máquina virtual Linux (Ubuntu) na Oracle Cloud Infrastructure (OCI).
 
-Sendo a camada cliente de uma solução completa, este aplicativo está sendo estruturado com foco em escalabilidade e baixo acoplamento:
+---
 
-* **Integração RESTful:** (em progresso)
-* **Modelagem de Dados:** (em progresso)
-* **Gerenciamento de Estado:** (em progresso)
-* **Segurança:** (em progresso)
+## 🛠️ Tecnologias Utilizadas
 
-## Tecnologias Utilizadas
-
-* **Framework:** Flutter (Versão 3.41.2)
+### Front-end
 * **Linguagem:** Dart
+* **Framework:** Flutter (v3.x)
+* **Comunicação HTTP:** Biblioteca nativa/HTTP client consumindo endpoints REST
 
+### Back-end
+* **Linguagem:** Java
+* **Framework:** Spring Boot
+* **Persistência:** Spring Data JPA & Hibernate
+* **Servidor Embutido:** Apache Tomcat
 
-## Como Executar o Projeto
+### Infraestrutura & Dados
+* **SGBD:** MySQL 8.0
+* **Contêineres:** Docker & Docker Compose
+* **Ambiente de Nuvem:** Oracle Cloud Infrastructure (OCI) / VM Ubuntu
 
-**Pré-requisitos:**
-* Flutter SDK instalado.
-* Emulador Android/iOS ou dispositivo físico configurado.
+---
 
+## 🚀 Como Executar o Projeto
 
+### Pré-requisitos
+* [Git](https://git-scm.com/)
+* [Docker](https://www.docker.com/) e [Docker Compose](https://docs.docker.com/compose/)
+* [Flutter SDK](https://docs.flutter.dev/get-started/install)
+
+---
+
+### 1. Clonar o Repositório
 ```bash
-# Clone este repositório
-$ git clone [https://github.com/MrEpilef/AXI-Stack.git](https://github.com/MrEpilef/AXI-Stack.git)
-
-# Acesse a pasta do projeto no terminal/cmd
-$ cd AXI-Stack
-
-# Instale as dependências
-$ flutter pub get
-
-# Execute a aplicação
-$ flutter run
+git clone [https://github.com/MrEpilef/AXI-Stack.git](https://github.com/MrEpilef/AXI-Stack.git)
+cd AXI-Stack
