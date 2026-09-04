@@ -34,10 +34,10 @@ Sendo a camada cliente de uma solução completa, este aplicativo está sendo es
 
 ```bash
 # Clone este repositório
-$ git clone [https://github.com/MrEpilef/GestorSofttec.git](https://github.com/MrEpilef/GestorSofttec.git)
+$ git clone [https://github.com/MrEpilef/AXI-Stack.git](https://github.com/MrEpilef/AXI-Stack.git)
 
 # Acesse a pasta do projeto no terminal/cmd
-$ cd GestorSofttec
+$ cd AXI-Stack
 
 # Instale as dependências
 $ flutter pub get
