@@ -28,7 +28,6 @@ class CadastroView extends StatelessWidget {
                     children: [
                       FormularioClientes(),
                       FormularioAnalistas(),
-                      //FormularioServicos(),
                       GradeProjetosView(),
                     ],
                   ),

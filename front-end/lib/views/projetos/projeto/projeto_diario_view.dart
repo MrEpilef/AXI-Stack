@@ -1,15 +1,10 @@
+import 'package:axi_stack/controllers/projeto_controller.dart';
+import 'package:axi_stack/services/ordem_servico_pdf.dart';
 import 'package:axi_stack/widgets/radio_group_padrao.dart';
 import 'package:flutter/material.dart';
-import 'package:axi_stack/widgets/botao_padrao.dart';
 import 'package:axi_stack/widgets/campo_texto_padrao.dart';
 import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
-
-
-import 'package:pdf/pdf.dart';
-import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
-
-enum TipoServico { implantacao, visita, treinamento, suporte_tecnico }
+import 'package:provider/provider.dart';
 
 class ProjetoDiarioView extends StatefulWidget {
   const ProjetoDiarioView({super.key});
@@ -22,7 +17,7 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
   DateTime _dataSelecionada = DateTime.now();
   bool _mostraPainel = false;
   bool _assinarDigitalmente = false;
-  TipoServico? _servicoSelecionado = TipoServico.implantacao;
+  TipoServico _servicoSelecionado = TipoServico.implantacao;
   final TextEditingController _servicoController = TextEditingController();
 
   @override
@@ -71,11 +66,41 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: const Color(0xFFFF4103),
         onPressed: () async {
-          await imprimirOrdemDeServico();
+          
+            final projetoAtivo = context.read<ProjetoController>().projetoAtivo;
+
+            if (projetoAtivo == null) {
+              print("Erro: Nenhum projeto ativo encontrado no controller");
+              return; 
+            }
+
+            final clienteProjeto = projetoAtivo.cliente;
+
+            await OrdemServicoPdfService.imprimir(
+              tipoServico: _servicoSelecionado,
+              analista: 'Felipe Miguel',
+              cliente: clienteProjeto,
+              dataRelatorio: _dataSelecionada,
+              
+              motivoServico: 'Solicitaçõa de Acompanhamento',
+              numeroChamado: '',
+              servicoLocal: 'Presencial',
+              servicos: _servicoController.text
+                        .split('\n')
+                        .where((linha) => linha.trim().isNotEmpty)
+                        .map((linha) => ItemServico(descricao: linha.trim()))
+                        .toList(),
+              periodos: [
+                {'data': formatarData(_dataSelecionada),
+                'inicio': '08:00',
+                'saida': '12:00',
+                'retorno': '13:15',
+                'fim': '18:00'},
+              ],
+            );
         },
         child: const Icon(Icons.print, color: Colors.white),
       ),
-
 
 
       body: Padding(
@@ -289,127 +314,5 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
       
     );
   }
-  Future<void> imprimirOrdemDeServico() async {
-  // 1. Cria o documento PDF em branco
-    final pdf = pw.Document();
 
-    // 2. Monta a página (O padrão já é folha A4)
-    pdf.addPage(
-      pw.Page(
-        pageFormat: PdfPageFormat.a4,
-        build: (pw.Context context) {
-          return pw.Column(
-            crossAxisAlignment: pw.CrossAxisAlignment.start,
-            children: [
-              // Cabeçalho
-              pw.Center(
-                child: pw.Text('ORDEM DE SERVIÇO', style: pw.TextStyle(fontSize: 24, fontWeight: pw.FontWeight.bold)),
-              ),
-              pw.SizedBox(height: 20),
-              
-              // Aqui você puxa as variáveis reais do seu sistema
-              pw.Text('Data: 04 de Setembro de 2026', style: const pw.TextStyle(fontSize: 14)),
-              pw.Text('Analista: (Nome do Analista)', style: const pw.TextStyle(fontSize: 14)),
-              pw.Divider(),
-
-
-              pw.Text('Tipo Serviço:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
-              pw.SizedBox(height: 10),
-              pw.Wrap(
-                spacing: 20,
-                children: TipoServico.values.map((opcao) {
-                  String textoOpcao = '';
-                  switch (opcao) {
-                    case TipoServico.implantacao: textoOpcao = 'Implantação'; break;
-                    case TipoServico.visita: textoOpcao = 'Visita'; break;
-                    case TipoServico.treinamento: textoOpcao = 'Treinamento'; break;
-                    case TipoServico.suporte_tecnico: textoOpcao = 'Treinamento'; break;
-                  }
-
-                  
-                  bool isSelecionado = _servicoSelecionado == opcao;
-
-                  return pw.Row(
-                    mainAxisSize: pw.MainAxisSize.min,
-                    children: [
-                      pw.Container(
-                        width: 14,
-                        height: 14,
-                        decoration: pw.BoxDecoration(
-                          shape: pw.BoxShape.circle,
-                          border: pw.Border.all(color: PdfColors.black, width: 1),
-                        ),
-                        
-                        child: isSelecionado
-                            ? pw.Center(
-                                child: pw.Container(
-                                  width: 7,
-                                  height: 7,
-                                  decoration: const pw.BoxDecoration(
-                                    shape: pw.BoxShape.circle,
-                                    color: PdfColors.black,
-                                  ),
-                                ),
-                              )
-                            : pw.SizedBox(),
-                      ),
-                      
-                      pw.SizedBox(width: 6), // Espaço entre a bolinha e o texto
-                      
-                      // O Texto
-                      pw.Text(textoOpcao, style: const pw.TextStyle(fontSize: 12)),
-                    ],
-                  );
-                }).toList(),
-              ),
-
-              pw.SizedBox(height: 20),
-              pw.Divider(),
-
-
-              // Serviços Realizados (Igual ao seu print)
-              pw.Text('Serviços Realizados:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
-              ..._servicoController.text
-                  .split('\n')
-                  .where((linha) => linha.trim().isNotEmpty)
-                  .map((servico) => pw.Bullet(text: servico)),
-
-              pw.SizedBox(height: 15),
-              
-              // Horários
-              pw.Text('Horários Apontados:', style: pw.TextStyle(fontSize: 16, fontWeight: pw.FontWeight.bold)),
-              pw.Row(
-                mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
-                children: [
-                  pw.Text('1º Entrada: 08:15'),
-                  pw.Text('1º Saída: 12:00'),
-                  pw.Text('2º Entrada: 13:15'),
-                  pw.Text('2º Saída: 18:00'),
-                ],
-              ),
-              pw.Divider(),
-
-              // Espaço para Assinatura no final da página
-              pw.Spacer(),
-              pw.Center(
-                child: pw.Column(
-                  children: [
-                    pw.Container(width: 250, height: 1, color: PdfColors.black),
-                    pw.SizedBox(height: 5),
-                    pw.Text('Assinatura do Cliente / Responsável'),
-                  ]
-                )
-              )
-            ],
-          );
-        },
-      ),
-    );
-
-    // 3. O "Pulo do Gato": Chama o sistema nativo de impressão (Windows/Android)
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-      name: 'OS_04_Setembro_2026', // Nome do arquivo gerado
-    );
-  }
 }

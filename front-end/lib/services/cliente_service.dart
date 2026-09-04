@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:axi_stack/models/cliente_model.dart';
 
 class ClienteService {
-  final String baseUrl = 'http://localhost:8080/api/cliente';
+  final String baseUrl = 'http://163.176.58.249:3030/api/cliente';
 
   Future<Cliente?> salvarCliente(Cliente cliente) async {
     print('Iniciando comunicação com o servidor...');

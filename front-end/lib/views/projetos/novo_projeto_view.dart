@@ -28,6 +28,7 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
 
   bool _carregandoClientes = true;
 
+  @override
   void initState() {
     super.initState();
 
@@ -35,14 +36,37 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
   }
 
   Future<void> _baixarClientes() async {
-    final service = ClienteService();
-    final listaClientes = await service.buscarListaCLientes();
 
-    if (mounted) {
+    setState(() {
+      _carregandoClientes = true;
+    });
+
+    try {
+      
+      final service = ClienteService();
+      final listaClientes = await service.buscarListaCLientes();
+
+      if (!mounted) return;
+
       setState(() {
         _listaTodosClientes = listaClientes;
-        _carregandoClientes = false;
       });
+    
+    } catch (e) {
+      if (!mounted) return;
+      
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Falha ao carregar clientes: $e'),
+          backgroundColor: Colors.redAccent,
+        ),
+    );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _carregandoClientes = false;
+        });
+      }
     }
   }
 
@@ -56,7 +80,7 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
 
   void pesquisa() {}
 
-  Future<void>? _selecionarData(TextEditingController controladorAlvo) async {
+  Future<void> _selecionarData(TextEditingController controladorAlvo) async {
     final DateTime? dataSelecionada = await showDatePicker(
       context: context,
       initialDate: DateTime.now(),
@@ -298,7 +322,7 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                         ),
                       ),
                       content: const Text(
-                        'Por favor, pesquise e selecione um cliente na lista!',
+                        'Por favor, selecione uma prioridade ao projeto',
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w500,
@@ -321,7 +345,7 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                     cliente: _clienteSelecionado!,
                   );
 
-                  final IProjetoService servico = ProjetoServiceMock();
+                  final IProjetoService servico = ProjetoServiceHttp();
 
                   Projeto? projetoSalvo = await servico.salvarProjeto(novoProjeto);
 

@@ -4,7 +4,7 @@ class RadioGroupPadrao<T> extends StatelessWidget{
   
   final List<T> opcoes;
   final T? valorSelecionado;
-  final ValueChanged<T?> onChanged;
+  final ValueChanged<T> onChanged;
   final String Function(T) tituloOpcao;
 
   const RadioGroupPadrao({
@@ -30,7 +30,11 @@ class RadioGroupPadrao<T> extends StatelessWidget{
           value: opcao,
           groupValue: valorSelecionado,
           activeColor: const Color(0xFFFF4103),
-          onChanged: onChanged,
+          onChanged: (T? valor){
+            if (valor != null){
+              onChanged(valor);
+            }
+          },
           );
       }).toList();
 

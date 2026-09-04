@@ -13,7 +13,7 @@ void main() async {
 
     // Configurações da janela exclusivas para PC
     WindowOptions windowOptions = const WindowOptions(
-      size: Size(1200, 800), 
+      size: Size(1366, 768), 
       center: true, 
       backgroundColor: Colors.transparent, 
       skipTaskbar: false,

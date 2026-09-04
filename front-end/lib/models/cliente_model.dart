@@ -7,7 +7,7 @@ class Cliente {
   final String uf;
   final String contato;
   final String telefone;
-  final String email;
+  final String? email;
 
   Cliente({
     this.codigoCliente,
@@ -18,7 +18,7 @@ class Cliente {
     required this.uf,
     required this.contato,
     required this.telefone,
-    required this.email,
+    this.email,
   });
 
   Map<String, dynamic> toJson() {

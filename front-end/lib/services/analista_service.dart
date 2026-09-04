@@ -4,7 +4,7 @@ import 'package:axi_stack/models/analista_model.dart';
 
 class AnalistaService {
   
-  final String baseUrl = 'http://localhost:8080/api/analista';
+  final String baseUrl = 'http://163.176.58.249:3030/api/analista';
 
   Future<Analista?> salvarAnalista(Analista analista) async {
     final pacoteJson = jsonEncode(analista.toJson());
