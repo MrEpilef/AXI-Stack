@@ -20,7 +20,7 @@ services:
     depends_on:
       - db
     ports:
-      - "3030:8080"
+      - "3030:3030"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/axi_stack?createDatabaseIfNotExist=true&serverTimezone=UTC
       SPRING_DATASOURCE_USERNAME: root
