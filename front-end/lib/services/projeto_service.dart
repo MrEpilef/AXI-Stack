@@ -29,8 +29,9 @@ class ProjetoServiceHttp implements IProjetoService {
         final retornoBackend = jsonDecode(response.body);
         return Projeto.fromJson(retornoBackend);
       } else {
-        print('Erro no servidor: ${response.statusCode}');
-        return null;
+
+        throw Exception('Falha ao salvar (${response.statusCode}): ${response.body}');
+        
       }
     } catch (e) {
       print('Erro ao conectar: $e');
@@ -42,7 +43,7 @@ class ProjetoServiceHttp implements IProjetoService {
   Future<List<Projeto>> buscarListaProjetos() async {
     final url = Uri.parse(baseUrl);
 
-    try {
+    
       final response = await http.get(url);
 
       if (response.statusCode == 200) {
@@ -51,10 +52,7 @@ class ProjetoServiceHttp implements IProjetoService {
       } else {
         throw Exception('Falha ao carregar os projetos');
       }
-    } catch (e) {
-      print('Erro ao buscar projetos: $e');
-      return [];
-    }
+    
   }
 }
 

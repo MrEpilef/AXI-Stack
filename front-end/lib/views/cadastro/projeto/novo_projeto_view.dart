@@ -74,11 +74,14 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
   void dispose() {
     _dataInicioController.dispose();
     _dataFimController.dispose();
+    _clienteController.dispose();
+    _nomeProjetoController.dispose();
+    _escopoProjetoController.dispose();
 
     super.dispose();
   }
 
-  void pesquisa() {}
+  
 
   Future<void> _selecionarData(TextEditingController controladorAlvo) async {
     final DateTime? dataSelecionada = await showDatePicker(
@@ -204,7 +207,9 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                               ),
                             );
                           },
+
                       // COLOCAR O DESIGN DO MEU Autocomplete
+                      
                     ),
                   ),
 
@@ -309,6 +314,30 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
               onPressed: () async {
                 bool formularioValido = _formKey.currentState!.validate();
 
+                if (_clienteSelecionado == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      behavior: SnackBarBehavior.floating,
+                      backgroundColor: const Color(0xFF001B29),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        side: const BorderSide(
+                          color: Color(0xFFFF4103),
+                          width: 1.5,
+                        ),
+                      ),
+                      content: const Text(
+                        'Por favor, selecione uma cliente da lista',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+                  );
+                  return;
+                }
+                
                 if (_prioridadeSelecionado == null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(
@@ -345,26 +374,47 @@ class _NovoProjetoViewState extends State<NovoProjetoView> {
                     cliente: _clienteSelecionado!,
                   );
 
-                  final IProjetoService servico = ProjetoServiceHttp();
+                  try {
+                    final IProjetoService servico = ProjetoServiceHttp();
+                    Projeto? projetoSalvo = await servico.salvarProjeto(novoProjeto);
 
-                  Projeto? projetoSalvo = await servico.salvarProjeto(novoProjeto);
+                    if (!mounted) return;
+                    if (projetoSalvo != null) {
 
-                  if (projetoSalvo != null) {
-
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
-                        behavior: SnackBarBehavior.floating,
-                        backgroundColor: const Color(0xFF001B29),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          side: const BorderSide(color: Colors.green, width: 1.5), // Borda verde!
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: const Color(0xFF001B29),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: const BorderSide(color: Colors.green, width: 1.5), // Borda verde!
+                          ),
+                          content: Text(
+                            'Sucesso! Projeto salvo (Código: ${projetoSalvo.codigoProjeto ?? "Gerado"})',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                          ),
                         ),
-                        content: Text(
-                          'Sucesso! Projeto salvo (Código: ${projetoSalvo.codigoProjeto ?? "Gerado"})',
-                          style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                      );
+                      widget.onVoltar();
+                    }
+                  } catch (e) {
+
+                    if (!mounted) return;
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          behavior: SnackBarBehavior.floating,
+                          backgroundColor: const Color(0xFF001B29),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            side: const BorderSide(color: Colors.red, width: 1.5), // Bola vermelha
+                          ),
+                          content: Text(
+                            'Erro ! Não foi possível cadastrar o projeto: $e',
+                            style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+                          ),
                         ),
-                      ),
-                    );
+                      );
+
                   }
                  
                   print(novoProjeto.toJson());

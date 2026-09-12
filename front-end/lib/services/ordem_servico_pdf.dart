@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
+import 'dart:typed_data';
 
 enum TipoServico { implantacao, visita, treinamento, suporte_tecnico }
 
@@ -43,8 +44,14 @@ class OrdemServicoPdfService {
         return 'Suporte Técnico';
     }
   }
-  static Future<void> imprimir({
+
+
+
+
+  static Future<Uint8List> gerarPdf({
     // Cabeçalho / tipo de serviço
+    PdfPageFormat format = PdfPageFormat.a4,
+
     required TipoServico tipoServico,
     required String analista,
     required DateTime dataRelatorio,
@@ -53,22 +60,31 @@ class OrdemServicoPdfService {
     required Cliente cliente,
 
     required String numeroChamado,
-    required String servicoLocal, // ex: "Presencial" / "Remoto"
+    required String servicoLocal, 
 
     String alimentacaoRS = '',
     String kmTotal = '',
   
-    // Serviços realizados
     required List<ItemServico> servicos,
     String motivoServico = '',
   
-    // Controle de tempo (pode ter mais de um período/dia)
     required List<Map<String, String>> periodos,
-    // cada item: {'data': '24/04/2026', 'inicio': '13:00', 'saida': '14:00', 'retorno': '', 'fim': ''}
+    
   }) async {
-    final pdf = pw.Document();
+    final fonteRegular = await PdfGoogleFonts.robotoRegular();
+    final fonteBold = await PdfGoogleFonts.robotoBold();
+    final fonteItalic = await PdfGoogleFonts.robotoItalic();
+
+    
+    final pdf = pw.Document(
+      theme: pw.ThemeData.withFont(
+        base: fonteRegular,
+        bold: fonteBold,
+        italic: fonteItalic,
+      ),
+    );
   
-    // Carrega as logos (coloque os arquivos em assets/ e registre no pubspec.yaml)
+    // Carrega as logos
     final logoIntersolid =
         pw.MemoryImage((await rootBundle.load('assets/logo_intersolid.png')).buffer.asUint8List());
     final logoSoftTec =
@@ -304,10 +320,7 @@ class OrdemServicoPdfService {
       ),
     );
   
-    await Printing.layoutPdf(
-      onLayout: (PdfPageFormat format) async => pdf.save(),
-      name: 'OS_${formatarData(dataRelatorio).replaceAll('/', '_')}',
-    );
+    return pdf.save();
   }
   
   /// ----------------------------------------------------------------
@@ -347,4 +360,35 @@ class OrdemServicoPdfService {
         child: pw.Text(texto, style: pw.TextStyle(fontSize: 9.5, fontWeight: pw.FontWeight.bold)),
       );
 
+  static Future<void> imprimir({
+    required TipoServico tipoServico,
+    required String analista,
+    required DateTime dataRelatorio,
+    required Cliente cliente,
+    required String numeroChamado,
+    required String servicoLocal,
+    String alimentacaoRS = '',
+    String kmTotal = '',
+    required List<ItemServico> servicos,
+    String motivoServico = '',
+    required List<Map<String, String>> periodos,
+  }) async {
+    await Printing.layoutPdf(
+      onLayout: (format) => gerarPdf(
+        format: format,
+        tipoServico: tipoServico,
+        analista: analista,
+        dataRelatorio: dataRelatorio,
+        cliente: cliente,
+        numeroChamado: numeroChamado,
+        servicoLocal: servicoLocal,
+        alimentacaoRS: alimentacaoRS,
+        kmTotal: kmTotal,
+        servicos: servicos,
+        motivoServico: motivoServico,
+        periodos: periodos,
+      ),
+      name: 'OS_${formatarData(dataRelatorio).replaceAll('/', '_')}',
+    );
+  }
 }

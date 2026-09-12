@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:axi_stack/views/projetos/projeto/projeto_detalhe_view.dart';
-import 'package:axi_stack/views/projetos/projeto/projeto_diario_view.dart';
-import 'package:axi_stack/views/projetos/projeto/projeto_financeiro_view.dart';
-import 'package:axi_stack/views/projetos/projeto/projeto_pendencias_view.dart';
-import 'package:flutter/rendering.dart';
+import 'package:axi_stack/views/cadastro/projeto/projeto_detalhe_view.dart';
+import 'package:axi_stack/views/cadastro/projeto/projeto_diario_view.dart';
+import 'package:axi_stack/views/cadastro/projeto/projeto_financeiro_view.dart';
+import 'package:axi_stack/views/cadastro/projeto/projeto_pendencias_view.dart';
 
 class ProjetoView extends StatelessWidget {
   final VoidCallback onVoltar;
@@ -24,7 +23,7 @@ class ProjetoView extends StatelessWidget {
           
         
           child: Padding(
-            padding: EdgeInsets.all(isMobile ? 12.00 : 32.0),
+            padding: EdgeInsets.all(isMobile ? 0.00 : 0.0),
         
         
             child: DefaultTabController(
@@ -33,7 +32,7 @@ class ProjetoView extends StatelessWidget {
         
               child: Container(
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
+                  borderRadius: BorderRadius.circular(0),
                   color: const Color(0xFF001621),
                   border: Border.all(
                     color: Colors.white.withValues(alpha: 0.1), 

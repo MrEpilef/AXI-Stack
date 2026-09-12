@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:ui';
 import 'package:axi_stack/controllers/projeto_controller.dart';
-import 'package:axi_stack/views/projetos/novo_projeto_view.dart';
-import 'package:axi_stack/views/projetos/projeto/projeto_view.dart';
+import 'package:axi_stack/views/cadastro/projeto/novo_projeto_view.dart';
+import 'package:axi_stack/views/cadastro/projeto/projeto_view.dart';
 import 'package:provider/provider.dart';
 import 'package:axi_stack/models/projeto_model.dart';
 import 'package:axi_stack/services/projeto_service.dart';
