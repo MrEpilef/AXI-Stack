@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Table(name = "projeto")
 public class ProjetoModel {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codigoProjeto;
 
 	private String nomeProjeto;
@@ -28,15 +28,15 @@ public class ProjetoModel {
 
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate dataTerminoPrevista;
-	
+
 	private Double orcamentoHoras;
-	
+
 	private Boolean isAtivo = true;
-	
+
 	@CreationTimestamp
 	@Column(updatable = false)
 	private LocalDateTime dataCriacao;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "codigo_cliente_fk", foreignKey = @ForeignKey(name = "fk_projeto_clientes"))
 	private ClienteModel cliente;
