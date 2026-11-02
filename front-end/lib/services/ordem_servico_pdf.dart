@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
-import 'dart:typed_data';
 
 enum TipoServico { implantacao, visita, treinamento, suporte_tecnico }
 
@@ -26,8 +25,7 @@ class OrdemServicoPdfService {
   //  impedir instanciação em outras telas
   OrdemServicoPdfService._();
 
-
-  static const _corLaranjaClara = PdfColor.fromInt(0xFFFBD9B8);
+  static const _corLaranjaEscuro = PdfColor.fromInt(0xFFFF4103);
   static const _corCabecalhoTabela = PdfColor.fromInt(0xFFBFD7EA);
 
 
@@ -136,17 +134,17 @@ class OrdemServicoPdfService {
             width: double.infinity,
             margin: const pw.EdgeInsets.only(top: 10),
             padding: const pw.EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-            decoration: const pw.BoxDecoration(color: _corLaranjaClara),
+            decoration: const pw.BoxDecoration(color: _corLaranjaEscuro),
             child: pw.Column(
               crossAxisAlignment: pw.CrossAxisAlignment.center,
               children: [
                 pw.Text('Soft-Tec - Soluções para Supermercado',
-                    style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold)),
-                pw.Text('Rua Carlos Chagas nº 154 - Setor Serrinha - Goiânia', style: const pw.TextStyle(fontSize: 8)),
-                pw.Text('Rua Padre Luiz Gonzaga nº 427 - Bairro Jundiaí - Anápolis', style: const pw.TextStyle(fontSize: 8)),
-                pw.Text('Fone: (62) 3096-7760', style: const pw.TextStyle(fontSize: 8)),
+                    style: pw.TextStyle(fontSize: 9, fontWeight: pw.FontWeight.bold, color: PdfColors.white)),
+                pw.Text('Rua Carlos Chagas nº 154 - Setor Serrinha - Goiânia', style: const pw.TextStyle(fontSize: 8, color: PdfColors.white)),
+                pw.Text('Rua Padre Luiz Gonzaga nº 427 - Bairro Jundiaí - Anápolis', style: const pw.TextStyle(fontSize: 8, color: PdfColors.white)),
+                pw.Text('Fone: (62) 3096-7760', style: const pw.TextStyle(fontSize: 8, color: PdfColors.white)),
                 pw.SizedBox(height: 4),
-                pw.Text('Página ${context.pageNumber} de ${context.pagesCount}', style: const pw.TextStyle(fontSize: 7)),
+                pw.Text('Página ${context.pageNumber} de ${context.pagesCount}', style: const pw.TextStyle(fontSize: 10, color: PdfColors.white, fontWeight: pw.FontWeight.bold)),
               ],
             ),
           );
@@ -202,7 +200,7 @@ class OrdemServicoPdfService {
           pw.Row(
             children: [
               pw.Text('Analista:  ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11)),
-              pw.Text(analista, style: const pw.TextStyle(fontSize: 11)),
+              pw.Text(analista, style: const pw.TextStyle(fontSize: 11,fontWeight: pw.FontWeight.bold)),
               pw.SizedBox(width: 40),
               pw.Text('Data do Relatório:  ', style: pw.TextStyle(fontWeight: pw.FontWeight.bold, fontSize: 11)),
               pw.Text(formatarData(dataRelatorio),
@@ -316,6 +314,7 @@ class OrdemServicoPdfService {
           // ---- Assinatura ----
           pw.Text('ASSINATURA', style: pw.TextStyle(fontSize: 11, fontWeight: pw.FontWeight.bold)),
           pw.SizedBox(height: 24),
+          
         ],
       ),
     );

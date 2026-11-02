@@ -1,6 +1,5 @@
 import 'package:axi_stack/services/ordem_servico_pdf.dart';
 import 'package:flutter/material.dart';
-import 'package:pdf/pdf.dart';
 import 'package:printing/printing.dart';
 import 'package:axi_stack/models/cliente_model.dart';
 
@@ -32,7 +31,8 @@ class VisualizarOsView extends StatelessWidget {
     this.motivoServico = '',
     required this.periodos,
   });
-
+  
+  
   @override
   Widget build(BuildContext context) {
     const corFundo = Color(0xFF000D15);
@@ -96,7 +96,6 @@ class VisualizarOsView extends StatelessWidget {
         ],
       ),
       body: PdfPreview(
-        // Remove a barra roxa do rodapé:
         useActions: false, 
         canChangePageFormat: false,
         canChangeOrientation: false,
@@ -139,7 +138,7 @@ class VisualizarOsView extends StatelessWidget {
       ),
     );
   }
-
+  
   Future<void> _imprimir(BuildContext context) async {
     final bytes = await OrdemServicoPdfService.gerarPdf(
       tipoServico: tipoServico,
