@@ -14,7 +14,7 @@ class ProjetoController extends ChangeNotifier {
   TelaProjeto get telaAtual => _telaAtual;
 
   Projeto? projetoAtivo;
-
+  
   void mudarTela(TelaProjeto novaTela) {
     _telaAtual = novaTela;
     notifyListeners();

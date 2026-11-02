@@ -90,86 +90,72 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
-
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color(0xFFFF4103),
-        onPressed: () async {
-          
-            final projetoAtivo = context.read<ProjetoController>().projetoAtivo;
-
-            if (projetoAtivo == null) {
-              print("Erro: Nenhum projeto ativo encontrado no controller");
-              return; 
-            }
-
-            final clienteProjeto = projetoAtivo.cliente;
-            
-            showDialog(
-              context: context,
-              builder: (context) => Dialog(
-                backgroundColor: Colors.transparent,
-                insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(8),
-                  child: VisualizarOsView(
-                  tipoServico: _servicoSelecionado,
-                  analista: 'Felipe Miguel',
-                  dataRelatorio: _dataSelecionada,
-                  cliente: clienteProjeto,
-                  numeroChamado: _numeroChamadoController.text,
-                  servicoLocal: 'Presencial',
-                  motivoServico: _motivoServicoController.text,
-                  kmTotal: _kmController.text.isNotEmpty ? '${_kmController.text} KM' : '',
-                  alimentacaoRS: _alimentacaoController.text.isNotEmpty ? 'R\$ ${_alimentacaoController.text}' : '',
-                  servicos: _servicoController.text
-                      .split('\n')
-                      .where((linha) => linha.trim().isNotEmpty)
-                      .map((linha) => ItemServico(descricao: linha.trim()))
-                      .toList(),
-                  periodos: [
-                    {
-                      'data': formatarData(_dataSelecionada),
-                      'inicio': _inicioJornadaController.text,
-                      'saida': _saidaJornadaController.text,
-                      'retorno': _retornoJornadaController.text,
-                      'fim': _fimJornadaController.text,
-                    },
-                  ],
-                  ),
-                ),
-              ),
-            );
-
-
-            /* await OrdemServicoPdfService.imprimir(
-              tipoServico: _servicoSelecionado,
-              analista: 'Felipe Miguel',
-              cliente: clienteProjeto,
-              dataRelatorio: _dataSelecionada,
+      floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
+      floatingActionButton: Row(
+        children: [
+          FloatingActionButton(
+            mouseCursor: SystemMouseCursors.click,
+            backgroundColor: const Color(0xFFFF4103),
+            onPressed: () async {
               
-              motivoServico: _motivoServicoController.text,
-              numeroChamado: _numeroChamadoController.text,
-              servicoLocal: 'Presencial',
-              kmTotal: _kmController.text + ' KM',
-              alimentacaoRS: 'R\$ ' + _alimentacaoController.text,
-              servicos: _servicoController.text
-                        .split('\n')
-                        .where((linha) => linha.trim().isNotEmpty)
-                        .map((linha) => ItemServico(descricao: linha.trim()))
-                        .toList(),
-              periodos: [{
+                final projetoAtivo = context.read<ProjetoController>().projetoAtivo;
 
-                'data': formatarData(_dataSelecionada),
-                'inicio': _inicioJornadaController.text,
-                'saida': _saidaJornadaController.text,
-                'retorno': _retornoJornadaController.text,
-                'fim': _fimJornadaController.text
+                if (projetoAtivo == null) {
+                  print("Erro: Nenhum projeto ativo encontrado no controller");
+                  return; 
+                }
 
-                },
-              ],
-            ); */
-        },
-        child: const Icon(Icons.print, color: Colors.white),
+                final clienteProjeto = projetoAtivo.cliente;
+                
+                showDialog(
+                  context: context,
+                  builder: (context) => Dialog(
+                    backgroundColor: Colors.transparent,
+                    insetPadding: const EdgeInsets.symmetric(horizontal: 40, vertical: 24),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: VisualizarOsView(
+                      tipoServico: _servicoSelecionado,
+                      analista: 'Felipe Miguel',
+                      dataRelatorio: _dataSelecionada,
+                      cliente: clienteProjeto,
+                      numeroChamado: _numeroChamadoController.text,
+                      servicoLocal: 'Presencial',
+                      motivoServico: _motivoServicoController.text,
+                      kmTotal: _kmController.text.isNotEmpty ? '${_kmController.text} KM' : '',
+                      alimentacaoRS: _alimentacaoController.text.isNotEmpty ? 'R\$ ${_alimentacaoController.text}' : '',
+                      servicos: _servicoController.text
+                          .split('\n')
+                          .where((linha) => linha.trim().isNotEmpty)
+                          .map((linha) => ItemServico(descricao: linha.trim()))
+                          .toList(),
+                      periodos: [
+                        {
+                          'data': formatarData(_dataSelecionada),
+                          'inicio': _inicioJornadaController.text,
+                          'saida': _saidaJornadaController.text,
+                          'retorno': _retornoJornadaController.text,
+                          'fim': _fimJornadaController.text,
+                        },
+                      ],
+                      ),
+                    ),
+                  ),
+                );
+            },
+            child: const Icon(Icons.print, color: Colors.white),
+          ),
+          SizedBox(width: 16),
+
+          FloatingActionButton(
+            mouseCursor: SystemMouseCursors.click,    
+            backgroundColor: const Color(0xFFFF4103),
+            child: const Icon(Icons.save_alt, color: Colors.white),
+            onPressed: () {
+            },
+
+          ),
+        ]
       ),
 
 
@@ -178,16 +164,22 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
         
         child: ListView(
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(projetoAtivo!.cliente.razaoSocial,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ],
+            ),
+            SizedBox(height: 20),
             isMobile
               ? Column(
                   children: [
-                    Text(projetoAtivo!.cliente.razaoSocial,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white
-                      ),
-                    ),
                     calendarioBox,
                     const SizedBox(height: 32), // Espaço vertical
                     if (_mostraPainel) _construirPainelOS(),
@@ -197,14 +189,6 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
 
               : Column(
                 children: [
-                  Text(projetoAtivo!.cliente.razaoSocial,
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white
-                    ),
-                  ),
-                  SizedBox(height: 15),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

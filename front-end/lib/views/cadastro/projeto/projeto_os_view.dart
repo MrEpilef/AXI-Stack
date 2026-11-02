@@ -1,10 +1,10 @@
+import 'dart:typed_data';
 import 'package:axi_stack/services/ordem_servico_pdf.dart';
 import 'package:flutter/material.dart';
 import 'package:printing/printing.dart';
 import 'package:axi_stack/models/cliente_model.dart';
 
-
-class VisualizarOsView extends StatelessWidget {
+class VisualizarOsView extends StatefulWidget {
   final TipoServico tipoServico;
   final String analista;
   final DateTime dataRelatorio;
@@ -31,8 +31,56 @@ class VisualizarOsView extends StatelessWidget {
     this.motivoServico = '',
     required this.periodos,
   });
-  
-  
+
+  @override
+  State<VisualizarOsView> createState() => _VisualizarOsViewState();
+}
+
+class _VisualizarOsViewState extends State<VisualizarOsView> {
+  // Variável que vai guardar o PDF gerado em memória
+  late Future<Uint8List> _pdfFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    // Inicia a geração apenas UMA vez quando a tela abre
+    _pdfFuture = _gerarPdfEmMemoria();
+  }
+
+  Future<Uint8List> _gerarPdfEmMemoria() {
+    return OrdemServicoPdfService.gerarPdf(
+      tipoServico: widget.tipoServico,
+      analista: widget.analista,
+      dataRelatorio: widget.dataRelatorio,
+      cliente: widget.cliente,
+      numeroChamado: widget.numeroChamado,
+      servicoLocal: widget.servicoLocal,
+      alimentacaoRS: widget.alimentacaoRS,
+      kmTotal: widget.kmTotal,
+      servicos: widget.servicos,
+      motivoServico: widget.motivoServico,
+      periodos: widget.periodos,
+    );
+  }
+
+  Future<void> _imprimir(BuildContext context) async {
+    // Reutiliza os bytes já gerados no initState!
+    final bytes = await _pdfFuture;
+
+    await Printing.layoutPdf(
+      onLayout: (_) async => bytes,
+      name: 'OS_${widget.numeroChamado.isNotEmpty ? widget.numeroChamado : "Relatorio"}',
+    );
+  }
+
+  Future<void> _compartilhar(BuildContext context) async {
+    final bytes = await _pdfFuture;
+    await Printing.sharePdf(
+      bytes: bytes,
+      filename: 'OS_${widget.cliente.razaoSocial.replaceAll(' ', '_')}.pdf',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     const corFundo = Color(0xFF000D15);
@@ -44,70 +92,95 @@ class VisualizarOsView extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: corCard,
         elevation: 1,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        automaticallyImplyLeading: false, 
+        
+        title: Row(
           children: [
-            Row(
-              children: [
-                const Text(
-                  'Pré-visualização da O.S',
-                  style: TextStyle(color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
-                ),
-                if (numeroChamado.isNotEmpty) ...[
-                  const SizedBox(width: 8),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                    decoration: BoxDecoration(
-                      color: corLaranja.withValues(alpha: 0.15),
-                      borderRadius: BorderRadius.circular(4),
-                      border: Border.all(color: corLaranja, width: 1),
-                    ),
-                    child: Text(
-                      '#$numeroChamado',
-                      style: const TextStyle(color: corLaranja, fontSize: 11, fontWeight: FontWeight.bold),
-                    ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      const Text(
+                        'Pré-visualização da O.S',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 17,
+                            fontWeight: FontWeight.bold),
+                      ),
+                      if (widget.numeroChamado.isNotEmpty) ...[
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: corLaranja.withValues(alpha: 0.15),
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: corLaranja, width: 1),
+                          ),
+                          child: Text(
+                            '#${widget.numeroChamado}',
+                            style: const TextStyle(
+                                color: corLaranja,
+                                fontSize: 11,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                      ],
+                    ],
+                  ),
+                  Text(
+                    widget.cliente.razaoSocial,
+                    style: const TextStyle(color: Colors.white60, fontSize: 12),
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ],
+              ),
+            ),
+            
+            // --- CENTRO: Botões Imprimir e Compartilhar ---
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                IconButton(
+                  mouseCursor: SystemMouseCursors.click,
+                  tooltip: 'Imprimir',
+                  icon: const Icon(Icons.print, color: Colors.white),
+                  onPressed: () => _imprimir(context),
+                ),
+                IconButton(
+                  mouseCursor: SystemMouseCursors.click,
+                  tooltip: 'Download',
+                  icon: const Icon(Icons.save_alt, color: Colors.white),
+                  onPressed: () => _compartilhar(context),
+                ),
               ],
             ),
-            Text(
-              cliente.razaoSocial,
-              style: const TextStyle(color: Colors.white60, fontSize: 12),
-              overflow: TextOverflow.ellipsis,
-            ),
+            
+            const Spacer(),
           ],
         ),
+        
         actions: [
           IconButton(
-            tooltip: 'Imprimir',
-            icon: const Icon(Icons.print_outlined, color: Colors.white),
-            onPressed: () => _imprimir(context),
-          ),
-          IconButton(
-            tooltip: 'Compartilhar',
-            icon: const Icon(Icons.share_outlined, color: Colors.white),
-            onPressed: () => _compartilhar(context),
+            tooltip: 'Fechar',
+            icon: const Icon(Icons.close, color: Colors.white),
+            onPressed: () => Navigator.of(context).pop(),
           ),
           const SizedBox(width: 8),
         ],
       ),
+
       body: PdfPreview(
-        useActions: false, 
+        useActions: false,
         canChangePageFormat: false,
         canChangeOrientation: false,
         canDebug: false,
-        maxPageWidth: 720, // Limita a largura para a folha A4 não esticar excessivamente em telas grandes
-
-        // Fundo escuro atrás da folha
+        maxPageWidth: 720,
         scrollViewDecoration: const BoxDecoration(
           color: corFundo,
         ),
-
-        // Efeito de folha física de papel (margem e sombra suave)
         pdfPreviewPageDecoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(4),
@@ -120,64 +193,8 @@ class VisualizarOsView extends StatelessWidget {
             ),
           ],
         ),
-
-        build: (format) => OrdemServicoPdfService.gerarPdf(
-          format: format,
-          tipoServico: tipoServico,
-          analista: analista,
-          dataRelatorio: dataRelatorio,
-          cliente: cliente,
-          numeroChamado: numeroChamado,
-          servicoLocal: servicoLocal,
-          alimentacaoRS: alimentacaoRS,
-          kmTotal: kmTotal,
-          servicos: servicos,
-          motivoServico: motivoServico,
-          periodos: periodos,
-        ),
+        build: (format) => _pdfFuture,
       ),
-    );
-  }
-  
-  Future<void> _imprimir(BuildContext context) async {
-    final bytes = await OrdemServicoPdfService.gerarPdf(
-      tipoServico: tipoServico,
-      analista: analista,
-      dataRelatorio: dataRelatorio,
-      cliente: cliente,
-      numeroChamado: numeroChamado,
-      servicoLocal: servicoLocal,
-      alimentacaoRS: alimentacaoRS,
-      kmTotal: kmTotal,
-      servicos: servicos,
-      motivoServico: motivoServico,
-      periodos: periodos,
-    );
-
-    await Printing.layoutPdf(
-      onLayout: (_) => bytes,
-      name: 'OS_${numeroChamado.isNotEmpty ? numeroChamado : "Relatorio"}',
-    );
-  }
-
-  Future<void> _compartilhar(BuildContext context) async {
-    final bytes = await OrdemServicoPdfService.gerarPdf(
-      tipoServico: tipoServico,
-      analista: analista,
-      dataRelatorio: dataRelatorio,
-      cliente: cliente,
-      numeroChamado: numeroChamado,
-      servicoLocal: servicoLocal,
-      alimentacaoRS: alimentacaoRS,
-      kmTotal: kmTotal,
-      servicos: servicos,
-      motivoServico: motivoServico,
-      periodos: periodos,
-    );
-
-    await Printing.sharePdf(
-      bytes: bytes,
-      filename: 'OS_${cliente.razaoSocial.replaceAll(' ', '_')}.pdf',
     );
   }
 }
