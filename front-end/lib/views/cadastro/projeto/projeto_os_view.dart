@@ -43,7 +43,6 @@ class _VisualizarOsViewState extends State<VisualizarOsView> {
   @override
   void initState() {
     super.initState();
-    // Inicia a geração apenas UMA vez quando a tela abre
     _pdfFuture = _gerarPdfEmMemoria();
   }
 
@@ -64,7 +63,6 @@ class _VisualizarOsViewState extends State<VisualizarOsView> {
   }
 
   Future<void> _imprimir(BuildContext context) async {
-    // Reutiliza os bytes já gerados no initState!
     final bytes = await _pdfFuture;
 
     await Printing.layoutPdf(

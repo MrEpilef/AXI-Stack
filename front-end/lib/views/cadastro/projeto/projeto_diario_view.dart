@@ -152,8 +152,17 @@ class _ProjetoDiarioViewState extends State<ProjetoDiarioView> {
             backgroundColor: const Color(0xFFFF4103),
             child: const Icon(Icons.save_alt, color: Colors.white),
             onPressed: () {
-            },
+              final projetoAtivo = context.read<ProjetoController>().projetoAtivo;
 
+              if (projetoAtivo == null) {
+                print("Erro: Nenhum projeto ativo encontrado no controller");
+                return; 
+              }
+
+              final clienteProjeto = projetoAtivo.cliente;
+              
+              
+              },
           ),
         ]
       ),
